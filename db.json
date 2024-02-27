@@ -11,18 +11,6 @@
       "text": "Do some workout",
       "day": "Feb 22",
       "reminder": true
-    },
-    {
-      "id": "3",
-      "text": "Visit College",
-      "day": "March 2",
-      "reminder": false
-    },
-    {
-      "id": 30636,
-      "text": "Quasi est voluptas ",
-      "day": "15",
-      "reminder": false
     }
   ]
 }

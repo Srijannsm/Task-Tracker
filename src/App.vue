@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Header @toggle-add-task="toggleAddTask" title="Task Tracker" :buttonChange="showAddTask" />
-    <div v-show="showAddTask" class="container">
+    <div v-show="showAddTask" class="container1">
       <div v-show="showAddTask">
         <AddTask @add-task="addTask" />
       </div>
@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     toggleAddTask() {
-      console.log('ok')
       this.showAddTask = !this.showAddTask
     },
 
@@ -58,8 +57,19 @@ export default {
       }
     },
 
-    toggleReminder(id) {
-      this.tasks = this.tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task)
+    async toggleReminder(id) {
+      const taskTotoggle = await this.fetchTask(id)
+      const updateTask = {...taskTotoggle,reminder: !taskTotoggle.reminder }
+      const res = await fetch(`api/tasks/${id}`,{
+        method: 'PUT',
+        headers : {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(updateTask)
+      })
+      const data = await res.json()
+        
+      this.tasks = this.tasks.map((task) => task.id === id ? { ...task, reminder: data.reminder } : task)
     },
 
     async fetchTasks() {
@@ -94,13 +104,23 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 800px;
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
+}
+
+.container1 {
+  max-width: 700px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 200px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 1px;
 }
 
 .btn {
